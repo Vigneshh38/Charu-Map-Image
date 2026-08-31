@@ -19,3 +19,10 @@ docs/src/**/*
 *.pt
 *.pth
 checkpoints
+
+# Docker
+Dockerfile
+Dockerfile.*
+*.dockerfile
+.dockerignore
+docker-compose*.yml
