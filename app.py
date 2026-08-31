@@ -46,7 +46,7 @@ transform = transforms.Compose([
 ])
 
 # --- 4. Prediction Function ---
-def predict_change(img_a_pil, img_b_pil):
+def _predict_change(img_a_pil, img_b_pil):
     if img_a_pil is None or img_b_pil is None:
         return None, None
 
@@ -54,9 +54,13 @@ def predict_change(img_a_pil, img_b_pil):
     img_a_rgb = img_a_pil.convert("RGB")
     img_b_rgb = img_b_pil.convert("RGB")
 
+    # Determine runtime device (cuda if ZeroGPU allocated, else cpu)
+    runtime_device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model.to(runtime_device)
+
     # Transform to tensor
-    tensor_a = transform(img_a_rgb).unsqueeze(0).to(device)
-    tensor_b = transform(img_b_rgb).unsqueeze(0).to(device)
+    tensor_a = transform(img_a_rgb).unsqueeze(0).to(runtime_device)
+    tensor_b = transform(img_b_rgb).unsqueeze(0).to(runtime_device)
 
     with torch.no_grad():
         output = model(tensor_a, tensor_b)
@@ -74,6 +78,11 @@ def predict_change(img_a_pil, img_b_pil):
     blended = Image.blend(img_b_resized, Image.fromarray(overlay_np), alpha=0.5)
 
     return mask_pil, blended
+
+if spaces is not None:
+    predict_change = spaces.GPU(_predict_change)
+else:
+    predict_change = _predict_change
 
 # --- 5. Gradio Web UI ---
 demo = gr.Interface(
