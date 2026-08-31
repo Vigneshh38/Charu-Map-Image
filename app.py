@@ -1,3 +1,8 @@
+try:
+    import spaces
+except ImportError:
+    spaces = None
+
 import os
 import torch
 import numpy as np
