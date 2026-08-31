@@ -1,5 +1,5 @@
 ---
-title: Map Detect
+title: Aftermath
 emoji: 🛰️
 colorFrom: blue
 colorTo: indigo
