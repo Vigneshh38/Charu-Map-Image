@@ -1,3 +1,13 @@
+---
+title: Map Detect
+emoji: 🛰️
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+app_file: app.py
+pinned: false
+---
+
 # Remote Sensing Image Change Detection with Transformers
 
 Here, we provide the pytorch implementation of the paper: Remote Sensing Image Change Detection with Transformers.
