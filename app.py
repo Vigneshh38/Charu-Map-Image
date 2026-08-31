@@ -25,7 +25,10 @@ checkpoint_path = os.path.join("checkpoints", "BIT_LEVIR", "best_ckpt.pt")
 if not os.path.exists(checkpoint_path):
     raise FileNotFoundError(f"Checkpoint not found at: {checkpoint_path}")
 
-checkpoint = torch.load(checkpoint_path, map_location=device)
+try:
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+except TypeError:
+    checkpoint = torch.load(checkpoint_path, map_location=device)
 model.load_state_dict(checkpoint["model_G_state_dict"])
 model.to(device)
 model.eval()
